@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Lion's Pride — Joongdong High School</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --off-black: #111111;
+      --surface: #161616;
+      --border: #252525;
+      --muted: #444444;
+      --silver: #888888;
+      --light: #cccccc;
+      --white: #f0ede8;
+      --gold: #c9a84c;
+      --gold-dim: #7a5e23;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 52px;
+      height: 64px;
+      background: rgba(10,10,10,0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--silver);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    /* HERO */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 52px 88px;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .hero-rule {
+      position: absolute;
+      top: 110px; left: 52px; right: 52px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold) 0%, transparent 55%);
+      opacity: 0.4;
+    }
+    .hero-bg-text {
+      position: absolute;
+      right: -50px; top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(9rem, 20vw, 26rem);
+      font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(201,168,76,0.055);
+      pointer-events: none;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4.5rem, 11vw, 10rem);
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      animation: fadeUp 0.9s 0.08s ease both;
+    }
+    .hero-headline em { font-style: italic; color: var(--gold); }
+    .hero-bottom {
+      margin-top: 44px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      animation: fadeUp 1s 0.18s ease both;
+    }
+    .hero-desc {
+      font-size: 0.92rem;
+      color: var(--silver);
+      max-width: 380px;
+      line-height: 1.75;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 30px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.25s, color 0.25s;
+      white-space: nowrap;
+    }
+    .hero-cta:hover { background: var(--gold); color: var(--black); }
+
+    /* SECTION SHARED */
+    section { position: relative; z-index: 1; }
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 52px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      max-width: 100px;
+    }
+
+    /* ABOUT */
+    #about {
+      padding: 120px 52px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .about-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 32px;
+    }
+    .about-left h2 em { display: block; font-style: italic; color: var(--gold); }
+    .about-right p {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: var(--light);
+      margin-bottom: 22px;
+    }
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 48px;
+    }
+    .stat { background: var(--off-black); padding: 28px 20px; text-align: center; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--gold);
+      display: block;
+    }
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--silver);
+      margin-top: 6px;
+      display: block;
+    }
+
+    /* ARCHIVE */
+    #archive {
+      padding: 120px 52px;
+      border-top: 1px solid var(--border);
+      background: var(--off-black);
+    }
+    .year-group {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 10px 24px;
+      background: var(--black);
+      border: 1px solid var(--border);
+    }
+    .archive-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border);
+      border-top: none;
+    }
+    .archive-table tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.18s;
+      cursor: pointer;
+    }
+    .archive-table tbody tr:last-child { border-bottom: none; }
+    .archive-table tbody tr:hover { background: #1c1c1c; }
+    .archive-table td { padding: 18px 24px; vertical-align: middle; }
+    .td-no {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      white-space: nowrap;
+      width: 70px;
+    }
+    .td-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .td-season { width: 110px; }
+    .season-badge {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.56rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 2px;
+    }
+    .season-badge.winter {
+      background: rgba(100,160,255,0.1);
+      color: #7ab4ff;
+      border: 1px solid rgba(100,160,255,0.2);
+    }
+    .season-badge.summer {
+      background: rgba(255,200,80,0.1);
+      color: #ffc850;
+      border: 1px solid rgba(255,200,80,0.2);
+    }
+    .td-pub { font-size: 0.75rem; color: var(--muted); font-style: italic; width: 200px; }
+    .td-link { width: 80px; text-align: right; }
+    .row-arrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .archive-table tbody tr:hover .row-arrow { color: var(--gold); }
+
+    /* TEAM */
+    #team {
+      padding: 120px 52px;
+      border-top: 1px solid var(--border);
+    }
+
+    .team-banner {
+      border: 1px solid var(--border);
+      background: var(--off-black);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+
+    .team-banner-left {
+      padding: 64px 56px;
+      border-right: 1px solid var(--border);
+    }
+
+    .team-banner-left .since {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .team-banner-left h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+      font-weight: 900;
+      line-height: 1.2;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .team-banner-left h3 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .team-banner-left p {
+      font-size: 0.88rem;
+      color: var(--silver);
+      line-height: 1.75;
+      margin-top: 20px;
+      max-width: 380px;
+    }
+
+    .team-banner-right {
+      padding: 64px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    .team-stat-item {}
+    .team-stat-item .label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .team-stat-item .value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .team-stat-item .value span {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    /* CONTACT */
+    #contact {
+      padding: 120px 52px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .contact-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .contact-left h2 em { font-style: italic; color: var(--gold); }
+    .contact-left p {
+      color: var(--silver);
+      line-height: 1.75;
+      font-size: 0.9rem;
+      margin-bottom: 40px;
+    }
+    .contact-items { display: flex; flex-direction: column; gap: 22px; }
+    .contact-item-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .contact-item-value { font-size: 0.9rem; color: var(--light); }
+    .contact-item-value a { color: var(--light); text-decoration: none; transition: color 0.2s; }
+    .contact-item-value a:hover { color: var(--gold); }
+    .contact-box {
+      border: 1px solid var(--border);
+      padding: 48px 40px;
+      background: var(--off-black);
+    }
+    .contact-box-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .contact-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--white);
+    }
+    .contact-box h3 span {
+      display: block;
+      font-style: italic;
+      color: var(--gold);
+      font-size: 1rem;
+      margin-top: 4px;
+    }
+    .contact-box p {
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--silver);
+      line-height: 1.7;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 32px 52px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1;
+      position: relative;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .footer-logo span { color: var(--gold-dim); }
+    .footer-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+    .footer-copy {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .footer-credit {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: #555;
+    }
+    .footer-credit span { color: var(--gold); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      #hero { padding: 0 24px 60px; }
+      #about, #contact { grid-template-columns: 1fr; gap: 48px; padding: 80px 24px; }
+      #archive, #team { padding: 80px 24px; }
+      .team-banner { grid-template-columns: 1fr; }
+      .team-banner-left { border-right: none; border-bottom: 1px solid var(--border); padding: 40px 32px; }
+      .team-banner-right { padding: 40px 32px; }
+      footer { padding: 28px 24px; flex-direction: column; gap: 12px; align-items: center; text-align: center; }
+      .footer-right { align-items: center; }
+      .stat-row { grid-template-columns: 1fr; }
+      .archive-table .td-pub { display: none; }
+      .archive-table .td-season { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#hero" class="nav-logo">The <span>Lion's</span> Pride</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#archive">Archive</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-rule"></div>
+    <div class="hero-bg-text">PRIDE</div>
+    <p class="hero-eyebrow">Joongdong High School &nbsp;·&nbsp; English Newspaper Club &nbsp;·&nbsp; Since 1990</p>
+    <h1 class="hero-headline">The<br /><em>Lion's</em><br />Pride</h1>
+    <div class="hero-bottom">
+      <p class="hero-desc">중동고등학교 영자신문부 — Reporting with clarity, writing with purpose.</p>
+      <a href="#archive" class="hero-cta">Browse All Editions &rarr;</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-left">
+      <div class="section-label">About</div>
+      <h2>We write.<br />We report.<br /><em>We roar.</em></h2>
+    </div>
+    <div class="about-right">
+      <p>The Lion's Pride is the official English newspaper of Joongdong High School (중동고등학교). Founded by students, for students — we cover campus news, global affairs, culture, and opinion, all in English.</p>
+      <p>Our mission is to sharpen our voices and broaden our perspectives. Every issue is crafted with careful journalism, thoughtful editing, and genuine curiosity about the world around us.</p>
+      <div class="stat-row">
+        <div class="stat">
+          <span class="stat-num">32+</span>
+          <span class="stat-label">Issues</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">35+</span>
+          <span class="stat-label">Years</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">1</span>
+          <span class="stat-label">Voice</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHIVE -->
+  <section id="archive">
+    <div class="section-label">Archive</div>
+
+    <div class="year-group">2026</div>
+    <table class="archive-table">
+      <tbody>
+        <tr onclick="window.open('https://drive.google.com/file/d/1bscRAJKujjkCoDdovDAaxCDliZJVSbqv/view','_blank')">
+          <td class="td-no">No. 33</td>
+          <td class="td-title">The Lion's Pride — 2026 Winter Edition</td>
+          <td class="td-season"><span class="season-badge winter">Winter</span></td>
+          <td class="td-pub">The Lion's Pride</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1bscRAJKujjkCoDdovDAaxCDliZJVSbqv/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="year-group" style="margin-top:28px;">2023</div>
+    <table class="archive-table">
+      <tbody>
+        <tr onclick="window.open('https://drive.google.com/file/d/1G1VTGZFp_ZHkPxdsfMq3fmaIwdOB0gio/view','_blank')">
+          <td class="td-no">No. 32</td>
+          <td class="td-title">The Lion's Pride — 2023 Winter Edition</td>
+          <td class="td-season"><span class="season-badge winter">Winter</span></td>
+          <td class="td-pub">The Lion's Pride (PDF)</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1G1VTGZFp_ZHkPxdsfMq3fmaIwdOB0gio/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+        <tr onclick="window.open('https://drive.google.com/file/d/1ww4sR8GiRBnC6qBrqL6bHaa68jzMHDG9/view','_blank')">
+          <td class="td-no">No. 31</td>
+          <td class="td-title">The Lion's Pride — 2023 Summer Edition</td>
+          <td class="td-season"><span class="season-badge summer">Summer</span></td>
+          <td class="td-pub">The Lion's Pride (PDF)</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1ww4sR8GiRBnC6qBrqL6bHaa68jzMHDG9/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="year-group" style="margin-top:28px;">2022</div>
+    <table class="archive-table">
+      <tbody>
+        <tr onclick="window.open('https://drive.google.com/file/d/1HjpwHAUmUBBJaW4R8Lnwqp5eWPP2O022/view?usp=sharing','_blank')">
+          <td class="td-no">No. 30</td>
+          <td class="td-title">The Lion's Pride — 2022 Winter Edition</td>
+          <td class="td-season"><span class="season-badge winter">Winter</span></td>
+          <td class="td-pub">The Lion's Pride (PDF)</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1HjpwHAUmUBBJaW4R8Lnwqp5eWPP2O022/view?usp=sharing" target="_blank">Read &rarr;</a></td>
+        </tr>
+        <tr onclick="window.open('https://drive.google.com/file/d/1ZQ5cq97dFXBQ-1-8Q9q8iq8fN-SZPo73/view','_blank')">
+          <td class="td-no">No. 29</td>
+          <td class="td-title">The Lion's Pride — 2022 Summer Edition</td>
+          <td class="td-season"><span class="season-badge summer">Summer</span></td>
+          <td class="td-pub">The Lion's Pride</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1ZQ5cq97dFXBQ-1-8Q9q8iq8fN-SZPo73/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="year-group" style="margin-top:28px;">2021</div>
+    <table class="archive-table">
+      <tbody>
+        <tr onclick="window.open('https://drive.google.com/file/d/1YQc08aZ2KZLDMoBrC1Nus3qLD970mMOn/view','_blank')">
+          <td class="td-no">No. 28</td>
+          <td class="td-title">The Lion's Pride — 2021 Winter Edition</td>
+          <td class="td-season"><span class="season-badge winter">Winter</span></td>
+          <td class="td-pub">The Lion's Pride</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1YQc08aZ2KZLDMoBrC1Nus3qLD970mMOn/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+        <tr onclick="window.open('https://drive.google.com/file/d/1zmUuvzrysGqpAge3bF3CfKtCOx2b0YHx/view','_blank')">
+          <td class="td-no">No. 27</td>
+          <td class="td-title">The Lion's Pride — 2021 Summer Edition</td>
+          <td class="td-season"><span class="season-badge summer">Summer</span></td>
+          <td class="td-pub">The Lion's Pride (오타수정본)</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1zmUuvzrysGqpAge3bF3CfKtCOx2b0YHx/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="year-group" style="margin-top:28px;">2020</div>
+    <table class="archive-table">
+      <tbody>
+        <tr onclick="window.open('https://drive.google.com/file/d/1zuAheXGmbelqEQhANfM9EtJutYp-wwPW/view','_blank')">
+          <td class="td-no">No. 26</td>
+          <td class="td-title">The Joongdong Times — 2020 Winter Edition</td>
+          <td class="td-season"><span class="season-badge winter">Winter</span></td>
+          <td class="td-pub">The Joongdong Times</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1zuAheXGmbelqEQhANfM9EtJutYp-wwPW/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="year-group" style="margin-top:28px;">2019</div>
+    <table class="archive-table">
+      <tbody>
+        <tr onclick="window.open('https://drive.google.com/file/d/1zwHmRDKzYEDfiIq3oBoDiO74Y1hcNUHc/view','_blank')">
+          <td class="td-no">No. 25</td>
+          <td class="td-title">The Joongdong Times — 2019 Winter Edition</td>
+          <td class="td-season"><span class="season-badge winter">Winter</span></td>
+          <td class="td-pub">The Joongdong Times</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1zwHmRDKzYEDfiIq3oBoDiO74Y1hcNUHc/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+        <tr onclick="window.open('https://drive.google.com/file/d/1zp6q-tsocPTZWQ_wlFe0XRTS8H_FkCAk/view','_blank')">
+          <td class="td-no">No. 24</td>
+          <td class="td-title">The Joongdong Times — 2019 Summer Edition</td>
+          <td class="td-season"><span class="season-badge summer">Summer</span></td>
+          <td class="td-pub">The Joongdong Times (능률영어사 편집)</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1zp6q-tsocPTZWQ_wlFe0XRTS8H_FkCAk/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="year-group" style="margin-top:28px;">2018</div>
+    <table class="archive-table">
+      <tbody>
+        <tr onclick="window.open('https://drive.google.com/file/d/155Z6kJvYifS62jl797HNxS45AvroKPBF/view','_blank')">
+          <td class="td-no">No. 23</td>
+          <td class="td-title">The Lion's Pride — 2018 Winter Edition</td>
+          <td class="td-season"><span class="season-badge winter">Winter</span></td>
+          <td class="td-pub">The Lion's Pride</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/155Z6kJvYifS62jl797HNxS45AvroKPBF/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+        <tr onclick="window.open('https://drive.google.com/file/d/1-4HEXyIjkplmzgvnDijy2OwWPIk2d2W-/view','_blank')">
+          <td class="td-no">No. 22</td>
+          <td class="td-title">The Lion's Pride — 2018 Summer Edition</td>
+          <td class="td-season"><span class="season-badge summer">Summer</span></td>
+          <td class="td-pub">The Lion's Pride</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1-4HEXyIjkplmzgvnDijy2OwWPIk2d2W-/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="year-group" style="margin-top:28px;">2017</div>
+    <table class="archive-table">
+      <tbody>
+        <tr onclick="window.open('https://drive.google.com/file/d/1zl5EVF8GuDgQ1Iapv1juh0J7OBkKLGo7/view','_blank')">
+          <td class="td-no">No. 21</td>
+          <td class="td-title">The Lion's Pride — 2017 Winter Edition</td>
+          <td class="td-season"><span class="season-badge winter">Winter</span></td>
+          <td class="td-pub">The Lion's Pride</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1zl5EVF8GuDgQ1Iapv1juh0J7OBkKLGo7/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+        <tr onclick="window.open('https://drive.google.com/file/d/1zi_KrI2RSxcXS_ojR3j5eMKvHHv7zgKT/view','_blank')">
+          <td class="td-no">No. 20</td>
+          <td class="td-title">The Lion's Pride — 2017 Summer Edition</td>
+          <td class="td-season"><span class="season-badge summer">Summer</span></td>
+          <td class="td-pub">The Lion's Pride</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1zi_KrI2RSxcXS_ojR3j5eMKvHHv7zgKT/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="year-group" style="margin-top:28px;">2016</div>
+    <table class="archive-table">
+      <tbody>
+        <tr onclick="window.open('https://drive.google.com/file/d/1zgbPbt2ogiaYJeikkFs3Op3tsyFNw6nU/view','_blank')">
+          <td class="td-no">No. 19</td>
+          <td class="td-title">The Lion's Pride — 2016 Winter Edition</td>
+          <td class="td-season"><span class="season-badge winter">Winter</span></td>
+          <td class="td-pub">The Lion's Pride</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1zgbPbt2ogiaYJeikkFs3Op3tsyFNw6nU/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+        <tr onclick="window.open('https://drive.google.com/file/d/1zb4gJh5L-eg6OwGAfnVYW6RsP8qwJXmt/view','_blank')">
+          <td class="td-no">No. 18</td>
+          <td class="td-title">The Lion's Pride — 2016 Summer Edition</td>
+          <td class="td-season"><span class="season-badge summer">Summer</span></td>
+          <td class="td-pub">The Lion's Pride</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1zb4gJh5L-eg6OwGAfnVYW6RsP8qwJXmt/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="year-group" style="margin-top:28px;">2015</div>
+    <table class="archive-table">
+      <tbody>
+        <tr onclick="window.open('https://drive.google.com/file/d/1zazkGVUvSnV-aNOCc7T3DUCUXd5Lav1s/view','_blank')">
+          <td class="td-no">No. 17</td>
+          <td class="td-title">The Lion's Pride — 2015 Winter Edition</td>
+          <td class="td-season"><span class="season-badge winter">Winter</span></td>
+          <td class="td-pub">The Lion's Pride</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1zazkGVUvSnV-aNOCc7T3DUCUXd5Lav1s/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+        <tr onclick="window.open('https://drive.google.com/file/d/1zaNQhbZqhTgbUY0NClr8FXybx-0sQ9fJ/view','_blank')">
+          <td class="td-no">No. 16</td>
+          <td class="td-title">The Lion's Pride — 2015 Summer Edition</td>
+          <td class="td-season"><span class="season-badge summer">Summer</span></td>
+          <td class="td-pub">The Lion's Pride</td>
+          <td class="td-link"><a class="row-arrow" href="https://drive.google.com/file/d/1zaNQhbZqhTgbUY0NClr8FXybx-0sQ9fJ/view" target="_blank">Read &rarr;</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </section>
+
+  <!-- TEAM -->
+  <section id="team">
+    <div class="section-label">Our Team</div>
+    <div class="team-banner">
+      <div class="team-banner-left">
+        <span class="since">Since 1990</span>
+        <h3>중동고등학교<br />영자신문부<br /><em>The Lion's Pride</em></h3>
+        <p>A student-run English newspaper dedicated to honest reporting, sharp writing, and the belief that every student has a story worth telling.</p>
+      </div>
+      <div class="team-banner-right">
+        <div class="team-stat-item">
+          <div class="label">School</div>
+          <div class="value">중동고등학교 <span>(Joongdong)</span></div>
+        </div>
+        <div class="team-stat-item">
+          <div class="label">Club</div>
+          <div class="value">영자신문부</div>
+        </div>
+        <div class="team-stat-item">
+          <div class="label">Publication</div>
+          <div class="value"><em style="font-family:'Playfair Display',serif; font-style:italic; color:var(--gold);">The Lion's Pride</em></div>
+        </div>
+        <div class="team-stat-item">
+          <div class="label">Founded</div>
+          <div class="value">1990 <span>· 35+ Years</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-left">
+      <div class="section-label">Contact</div>
+      <h2>Get in<br /><em>touch.</em></h2>
+      <p>Have a story tip, feedback, or want to join the club? We'd love to hear from you.</p>
+      <div class="contact-items">
+        <div>
+          <div class="contact-item-label">School</div>
+          <div class="contact-item-value">중동고등학교 (Joongdong High School)</div>
+        </div>
+        <div>
+          <div class="contact-item-label">Club</div>
+          <div class="contact-item-value">영자신문부 — The Lion's Pride</div>
+        </div>
+        <div>
+          <div class="contact-item-label">Instagram</div>
+          <div class="contact-item-value">
+            <a href="https://instagram.com/joongdong_lp" target="_blank">@joongdong_lp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-right" style="padding-top: 8px;">
+      <div class="contact-box">
+        <div class="contact-box-label">Location</div>
+        <h3>중동고등학교<span>Joongdong High School</span></h3>
+        <p>서울특별시<br />Seoul, South Korea</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">The <span>Lion's</span> Pride</div>
+    <div class="footer-right">
+      <div class="footer-copy">&copy; 2026 The Lion's Pride of Joongdong High School. All Rights Reserved.</div>
+      <div class="footer-credit">Website by <span>36기 Hyunseung Yu</span></div>
+    </div>
+  </footer>
+
+</body>
+</html>
